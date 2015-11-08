@@ -14,10 +14,14 @@ void Thread::execute() {
 	while (!this->exited) {
 
 		if (this->queue.size()) {
-			Task *task = this->queue.front();
 			this->isAvailable = false;
+
+			EnterCriticalSection(this->section);
+				Task *task = this->queue.front();
+				this->queue.pop();
+			LeaveCriticalSection(this->section);
+
 			task->execute();
-			this->queue.pop();
 			this->isAvailable = true;
 		}
 		else {

@@ -2,11 +2,12 @@
 #include "Task.h"
 #include <iostream>
 #include "logger.h";
+
 Task::Task() {
 	int maxTaskTimeMilliseconds = 50000;
 	srand(time(0));
 
-	this->task = rand() % maxTaskTimeMilliseconds;
+	this->task = /*rand() %*/ maxTaskTimeMilliseconds;
 }
 
 void Task::execute() {

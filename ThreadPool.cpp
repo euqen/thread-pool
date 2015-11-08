@@ -18,6 +18,7 @@ ThreadPool::ThreadPool(int poolSize) {
 		this->threads.push_back(new Thread(&section));
 	}
 	this->handler = CreateThread(NULL, 0, controller, this, 0, NULL);
+
 	Logger::info("Thread pull has beed initialized by " + std::to_string(poolSize) + " threads");
 }
 
@@ -36,6 +37,7 @@ void ThreadPool::execute() {
 }
 
 DWORD WINAPI ThreadPool::controller(LPVOID self) {
+	Sleep(10); 
 	ThreadPool * tp = (ThreadPool *)self;
 	tp->execute();
 
@@ -74,6 +76,7 @@ void ThreadPool::assignTask(Task * task, Thread * thread) {
 
 
 void ThreadPool::destroy() {
+	Logger::alert("Thread Pool destroying has been started");
 
 	for (int i = 0; i < this->threads.size(); i++) {
 		this->threads[i]->close();
@@ -83,7 +86,7 @@ void ThreadPool::destroy() {
 	DeleteCriticalSection(&section);
 
 	this->enabled = false;
-	Logger::alert("Thread pool has been successfully finished.");
+	Logger::alert("Thread pool has been successfully destroyed.");
 
 	ExitThread(0);
 }
